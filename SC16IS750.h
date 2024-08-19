@@ -1,7 +1,7 @@
-/* 
+/*
 Description:
 This is a example code for Sandbox Electronics' I2C/SPI to UART bridge module.
-You can get one of those products on 
+You can get one of those products on
 http://sandboxelectronics.com
 
 Version:
@@ -16,7 +16,7 @@ Tiequan Shao          info@sandboxelectronics.com
 Lisence:
 CC BY-NC-SA 3.0
 
-Please keep the above information when you use this code in your project. 
+Please keep the above information when you use this code in your project.
 */
 
 
@@ -24,9 +24,9 @@ Please keep the above information when you use this code in your project.
 #define _SC16IS750_H_
 
 #if ARDUINO >= 100
- #include "Arduino.h"
+  #include "Arduino.h"
 #else
- #include "WProgram.h"
+  #include "WProgram.h"
 #endif
 
 //Device Address
@@ -95,11 +95,11 @@ Please keep the above information when you use this code in your project.
 #define     SC16IS750_INT_THR        (0X02)
 #define     SC16IS750_INT_RHR        (0X01)
 
-//Application Related 
+//Application Related
 
-#define     SC16IS750_CRYSTCAL_FREQ (14745600UL) 
-//#define 	SC16IS750_CRYSTCAL_FREQ (1843200UL)	  
-//#define     SC16IS750_CRYSTCAL_FREQ (16000000UL)    
+#define     SC16IS750_CRYSTCAL_FREQ (14745600UL)
+//#define 	SC16IS750_CRYSTCAL_FREQ (1843200UL)
+//#define     SC16IS750_CRYSTCAL_FREQ (16000000UL)
 //#define     SC16IS750_DEBUG_PRINT   (0)
 #define     SC16IS750_PROTOCOL_I2C  (0)
 #define     SC16IS750_PROTOCOL_SPI  (1)
@@ -108,60 +108,60 @@ Please keep the above information when you use this code in your project.
 
 
 class SC16IS750 : public Stream
-{ 
-    public:
-        SC16IS750(uint8_t prtcl = SC16IS750_PROTOCOL_I2C, uint8_t addr = SC16IS750_ADDRESS_AD);
-        void begin(uint32_t baud);                               
-        int read();
-        size_t write(uint8_t val);
-        int available();
-        void pinMode(uint8_t pin, uint8_t io);
-        void digitalWrite(uint8_t pin, uint8_t value);
-        uint8_t digitalRead(uint8_t pin);
-		uint8_t ping();
-	//	void setTimeout(uint32_t);
-	//	size_t readBytes(char *buffer, size_t length);
-		int peek();
-		void flush();
-		uint8_t GPIOGetPortState(void);
-		uint8_t InterruptPendingTest(void);
-		void    SetPinInterrupt(uint8_t io_int_ena);
-		void    InterruptControl(uint8_t int_ena);
-		void    ModemPin(uint8_t gpio); //gpio == 0, gpio[7:4] are modem pins, gpio == 1 gpio[7:4] are gpios
-		void    GPIOLatch(uint8_t latch);
-        
-    
-    private:
-        uint8_t device_address_sspin;
-        uint8_t protocol;
-	//	uint32_t timeout;
-        int16_t SetBaudrate(uint32_t baudrate);
-        uint8_t ReadRegister(uint8_t reg_addr);
-        void    WriteRegister(uint8_t reg_addr, uint8_t val);
-        void    SetLine(uint8_t data_length, uint8_t parity_select, uint8_t stop_length );
-        void    GPIOSetPinMode(uint8_t pin_number, uint8_t i_o);
-        void    GPIOSetPinState(uint8_t pin_number, uint8_t pin_state);
-		
-        uint8_t GPIOGetPinState(uint8_t pin_number);
-        void    GPIOSetPortMode(uint8_t port_io);
-        void    GPIOSetPortState(uint8_t port_state);
-        void    ResetDevice(void);
-        
-        
-        
-        void    __isr(void);
-        void    FIFOEnable(uint8_t fifo_enable);
-        void    FIFOReset(uint8_t rx_fifo);
-        void    FIFOSetTriggerLevel(uint8_t rx_fifo, uint8_t length);
-        uint8_t FIFOAvailableData(void);
-        uint8_t FIFOAvailableSpace(void);
-        void    WriteByte(uint8_t val);
-        int     ReadByte(void);
-        void    EnableTransmit(uint8_t tx_enable);
-	//	int16_t readwithtimeout();
-		int 	peek_buf;
-		uint8_t peek_flag;
-		
+{
+  public:
+    SC16IS750(uint8_t prtcl = SC16IS750_PROTOCOL_I2C, uint8_t addr = SC16IS750_ADDRESS_AD);
+    void begin(uint32_t baud, uint8_t data_length = 8, uint8_t parity_select = 0, uint8_t stop_length = 1);
+    int read();
+    size_t write(uint8_t val);
+    int available();
+    void pinMode(uint8_t pin, uint8_t io);
+    void digitalWrite(uint8_t pin, uint8_t value);
+    uint8_t digitalRead(uint8_t pin);
+    uint8_t ping();
+    //	void setTimeout(uint32_t);
+    //	size_t readBytes(char *buffer, size_t length);
+    int peek();
+    void flush();
+    uint8_t GPIOGetPortState(void);
+    uint8_t InterruptPendingTest(void);
+    void    SetPinInterrupt(uint8_t io_int_ena);
+    void    InterruptControl(uint8_t int_ena);
+    void    ModemPin(uint8_t gpio); //gpio == 0, gpio[7:4] are modem pins, gpio == 1 gpio[7:4] are gpios
+    void    GPIOLatch(uint8_t latch);
+
+
+  private:
+    uint8_t device_address_sspin;
+    uint8_t protocol;
+    //	uint32_t timeout;
+    int16_t SetBaudrate(uint32_t baudrate);
+    uint8_t ReadRegister(uint8_t reg_addr);
+    void    WriteRegister(uint8_t reg_addr, uint8_t val);
+    void    SetLine(uint8_t data_length, uint8_t parity_select, uint8_t stop_length );
+    void    GPIOSetPinMode(uint8_t pin_number, uint8_t i_o);
+    void    GPIOSetPinState(uint8_t pin_number, uint8_t pin_state);
+
+    uint8_t GPIOGetPinState(uint8_t pin_number);
+    void    GPIOSetPortMode(uint8_t port_io);
+    void    GPIOSetPortState(uint8_t port_state);
+    void    ResetDevice(void);
+
+
+
+    void    __isr(void);
+    void    FIFOEnable(uint8_t fifo_enable);
+    void    FIFOReset(uint8_t rx_fifo);
+    void    FIFOSetTriggerLevel(uint8_t rx_fifo, uint8_t length);
+    uint8_t FIFOAvailableData(void);
+    uint8_t FIFOAvailableSpace(void);
+    void    WriteByte(uint8_t val);
+    int     ReadByte(void);
+    void    EnableTransmit(uint8_t tx_enable);
+    //	int16_t readwithtimeout();
+    int 	peek_buf;
+    uint8_t peek_flag;
+
 };
 
 #endif
@@ -170,5 +170,5 @@ class SC16IS750 : public Stream
 
 
 
-    
-    
+
+
