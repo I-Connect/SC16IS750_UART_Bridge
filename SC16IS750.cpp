@@ -32,6 +32,8 @@ Please keep the above information when you use this code in your project.
  #define WIRE Wire1
 #endif
 
+SPISettings spiSettings = SPISettings((uint32_t)4000000, MSBFIRST,SPI_MODE0);
+
 
 SC16IS750::SC16IS750(uint8_t prtcl, uint8_t addr_sspin)
 {
@@ -48,21 +50,12 @@ SC16IS750::SC16IS750(uint8_t prtcl, uint8_t addr_sspin)
 
 void SC16IS750::begin(uint32_t baud)
 {
-    //Serial.println("1111111111111111");
 	if ( protocol == SC16IS750_PROTOCOL_I2C) {
-	//Serial.println("22222222222222");
         WIRE.begin();
     } else {
-	//Serial.println("3333333333333333333");
 		::pinMode(device_address_sspin, OUTPUT);
    	    ::digitalWrite(device_address_sspin, HIGH);
-		SPI.setDataMode(SPI_MODE0);
-		SPI.setClockDivider(SPI_CLOCK_DIV4);
-		SPI.setBitOrder(MSBFIRST);
 		SPI.begin();
-		//SPI.setClockDivider(32);
-
-	//Serial.println("4444444444444444444");
 	};
     ResetDevice();
     FIFOEnable(1);
@@ -119,7 +112,9 @@ uint8_t SC16IS750::ReadRegister(uint8_t reg_addr)
 	} else if (protocol == SC16IS750_PROTOCOL_SPI) {                                   //register read operation via SPI
 		::digitalWrite(device_address_sspin, LOW);
 		delayMicroseconds(10);
+        SPI.beginTransaction(spiSettings);
 		SPI.transfer(0x80|(reg_addr<<3));
+        SPI.endTransaction();
 		result = SPI.transfer(0xff);
 		delayMicroseconds(10);
 		::digitalWrite(device_address_sspin, HIGH);
@@ -139,8 +134,10 @@ void SC16IS750::WriteRegister(uint8_t reg_addr, uint8_t val)
 	} else {
 		::digitalWrite(device_address_sspin, LOW);
 		delayMicroseconds(10);
-		SPI.transfer(reg_addr<<3);
+		SPI.beginTransaction(spiSettings);
+        SPI.transfer(reg_addr<<3);
 		SPI.transfer(val);
+        SPI.endTransaction();
 		delayMicroseconds(10);
 		::digitalWrite(device_address_sspin, HIGH);
 
