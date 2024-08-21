@@ -97,15 +97,15 @@ Please keep the above information when you use this code in your project.
 
 //Application Related
 
-#define     SC16IS750_CRYSTCAL_FREQ (14745600UL)
-//#define 	SC16IS750_CRYSTCAL_FREQ (1843200UL)
-//#define     SC16IS750_CRYSTCAL_FREQ (16000000UL)
+#ifndef SC16IS750_CRYSTCAL_FREQ
+  #define     SC16IS750_CRYSTCAL_FREQ (14745600UL)
+  //#define 	SC16IS750_CRYSTCAL_FREQ (1843200UL)
+  //#define     SC16IS750_CRYSTCAL_FREQ (16000000UL)
+#endif
+
 //#define     SC16IS750_DEBUG_PRINT   (0)
 #define     SC16IS750_PROTOCOL_I2C  (0)
 #define     SC16IS750_PROTOCOL_SPI  (1)
-
-
-
 
 class SC16IS750 : public Stream
 {
