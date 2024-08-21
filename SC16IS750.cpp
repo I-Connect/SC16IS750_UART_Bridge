@@ -81,6 +81,7 @@ int SC16IS750::read(void)
 size_t SC16IS750::write(uint8_t val)
 {
   WriteByte(val);
+  return 1;
 }
 
 void SC16IS750::pinMode(uint8_t pin, uint8_t i_o)
