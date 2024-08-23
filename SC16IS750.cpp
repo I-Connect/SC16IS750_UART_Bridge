@@ -112,12 +112,10 @@ uint8_t SC16IS750::ReadRegister(uint8_t reg_addr)
     result = WIRE.read();
   } else if (protocol == SC16IS750_PROTOCOL_SPI) {                                   //register read operation via SPI
     ::digitalWrite(device_address_sspin, LOW);
-    delayMicroseconds(10);
     SPI.beginTransaction(spiSettings);
     SPI.transfer(0x80 | (reg_addr << 3));
     result = SPI.transfer(0xff);
     SPI.endTransaction();
-    delayMicroseconds(10);
     ::digitalWrite(device_address_sspin, HIGH);
   }
 
@@ -134,12 +132,10 @@ void SC16IS750::WriteRegister(uint8_t reg_addr, uint8_t val)
     WIRE.endTransmission(1);
   } else {
     ::digitalWrite(device_address_sspin, LOW);
-    delayMicroseconds(10);
     SPI.beginTransaction(spiSettings);
     SPI.transfer(reg_addr << 3);
     SPI.transfer(val);
     SPI.endTransaction();
-    delayMicroseconds(10);
     ::digitalWrite(device_address_sspin, HIGH);
 
   }
