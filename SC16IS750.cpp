@@ -115,8 +115,8 @@ uint8_t SC16IS750::ReadRegister(uint8_t reg_addr)
     delayMicroseconds(10);
     SPI.beginTransaction(spiSettings);
     SPI.transfer(0x80 | (reg_addr << 3));
-    SPI.endTransaction();
     result = SPI.transfer(0xff);
+    SPI.endTransaction();
     delayMicroseconds(10);
     ::digitalWrite(device_address_sspin, HIGH);
   }
